@@ -58,3 +58,6 @@ or
 ```
 % cat ~/.ssh/config| grep '\-ansible'| cut -d" " -f2 > inventory
 ```
+ ### --become option
+
+no password on the lxc servers, so password is empty when asked, but not really required.
