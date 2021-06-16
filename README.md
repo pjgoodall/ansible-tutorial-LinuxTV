@@ -12,3 +12,37 @@ the miniconda environment
 4. `mamba env create -f ./environment.yml` to create a conda environment with ansible installed.
 5. activate the environment `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using zsh **not working**
 
+
+## Notes
+
+```
+export servers_ip=$(lxc ls -c 4 --format csv| cut -d" " -f1  | xargs) 
+for i in ${servers_ip}; do ssh-copy-id -i ~/.ssh/ansible ubuntu@$i ; done
+
+```
+
+```
+% cat ~/.ssh/config
+Host one
+        HostName 10.69.189.56
+Host three
+        HostName 10.69.189.216
+Host two
+        HostName 10.69.189.215
+
+Host one-ansible
+        HostName 10.69.189.56
+Host three-ansible
+        HostName 10.69.189.216
+Host two-ansible
+        HostName 10.69.189.215
+
+Host *ansible
+        IdentityFile ~/.ssh/ansible
+
+
+Host *
+        User ubuntu
+        IdentityFile ~/.ssh/peter_tutorial
+        StrictHostKeyChecking=no
+```
