@@ -46,3 +46,15 @@ Host *
         IdentityFile ~/.ssh/peter_tutorial
         StrictHostKeyChecking=no
 ```
+
+### Create the initial inventory file
+
+```
+lxc ls -c 4 --format csv| cut -d" " -f1 > inventory
+```
+
+or
+
+```
+% cat ~/.ssh/config| grep '\-ansible'| cut -d" " -f2 > inventory
+```
