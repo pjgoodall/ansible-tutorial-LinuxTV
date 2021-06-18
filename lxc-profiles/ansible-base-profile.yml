@@ -1,0 +1,16 @@
+# Allows nested containers: `security.nesting: "true"`
+config:
+  security.nesting: "true"
+  user.user-data: |
+    #cloud-config
+    locale: en_AU.UTF-8
+    timezone: Australia/Sydney
+    package_upgrade: true
+    packages:
+      - neovim
+    ssh_authorized_keys:
+       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIACBSmFgMek1WjJif8W2Iz4W9YoVMu9wCfiTja+GJq3h ansible
+description: Bare ansible profile
+devices: {}
+name: ansible-base
+used_by: []
