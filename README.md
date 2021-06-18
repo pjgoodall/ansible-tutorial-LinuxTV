@@ -5,11 +5,32 @@ Following a [tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7
 
 ## Process
 
+( in-progess)
+
+### Create required lxc profile
+
+You will need to substitute in your public key you made for ansible by editing 
+
+```
+lxc profile create ansible
+cat lxc-profiles/ansible-base-profile.yml | lxc profile edit ansible by editing `ansible-base-profile.yml`
+```
+
+### create your host container
+
+```
+lxc launch ubuntu:20.04 --profile default --profile ansible ansible-host
+
+```
+
+
+Within the Ubuntu 20.04 LTS lxc container:
+
 1. Install miniconda using install-miniconda.sh
-2. `apt purge ansible` to make sure there is no ansible installation based on a p[ython which conflicts with 
+2. `apt purge ansible` - to make sure there is no ansible installation based on a python which conflicts with 
 the miniconda environment
-3. `conda install -c conda-forge mamba` much quicker build tool for conda environments
-4. `mamba env create -f ./environment.yml` to create a conda environment with ansible installed.
+3. `conda install -c conda-forge mamba` -  a much quicker build tool for conda environments
+4. `mamba env create -f ./environment.yml` - to create a conda environment with ansible installed.
 5. Add the incantation to activate the environment to your user's shell startup script `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using zsh to ~/.zshrc
 
 
