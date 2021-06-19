@@ -44,6 +44,14 @@ The CentOS image `images:centos/8` is missing a lot of things needed to follow t
 
 [How To Install the Apache Web Server on CentOS 8](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-8) - I followed the isntructions, but had to add http service becuase lynx would not make connection without https certificate.
 
+### Running a playbook with a ist of tags require plays or tasks to have all the tags to be executed. The list is AND. See [Selecting or skipping tags when you run a playbook](https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html#selecting-or-skipping-tags-when-you-run-a-playbook)
+
+```
+ansible-playbook site.yml --tags "apache,db"
+```
+
+Runns only plays or tasks with both 'apache' and 'db'.
+
 
 ## General Notes
 
@@ -57,6 +65,13 @@ export servers_ip=$(lxc ls -c 4 --format csv| cut -d" " -f1  | xargs)
 
 for i in ${servers_ip}; do ssh-copy-id -i ~/.ssh/ansible ubuntu@$i ; done
 
+```
+
+### Iterate over containers in parallel
+
+```
+# Use those cores!
+ % for i in $servers; do lxc restore ${i} base &; done && wait
 ```
 
 ```
