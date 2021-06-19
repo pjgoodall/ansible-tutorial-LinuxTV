@@ -73,6 +73,10 @@ for i in ${servers_ip}; do ssh-copy-id -i ~/.ssh/ansible ubuntu@$i ; done
  % for i in $servers; do lxc restore ${i} base &; done && wait
 ```
 
+### An example ssh_config file to manage host names and public keys
+
+Makes it easy to work with multiple keys and ansible
+
 ```
 % cat ~/.ssh/config
 Host one
