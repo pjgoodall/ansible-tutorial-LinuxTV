@@ -1,4 +1,9 @@
-one-ansible apache_package=apache2 php_package=libapache2-mod-php
-three-ansible apache_package=apache2 php_package=libapache2-mod-php
-two-ansible apache_package=apache2 php_package=libapache2-mod-php
-centos-ansible apache_package=httpd php_package=php
+[web_servers]
+one-ansible 
+centos-ansible
+
+[db_servers]
+three-ansible
+
+[file_servers]
+two-ansible
