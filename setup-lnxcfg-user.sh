@@ -6,7 +6,7 @@
 # create lnxcfg user
 
 #install pre-requisite packages and vim
-dnf install -y openssh-server sudo vim
+dnf install -y openssh-server sudo firewalld vim
 
 getentUser=$(/usr/bin/getent passwd lnxcfg)
 if [ -z "$getentUser" ]

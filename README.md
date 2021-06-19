@@ -33,8 +33,19 @@ the miniconda environment
 4. `mamba env create -f ./environment.yml` - to create a conda environment with ansible installed.
 5. Add the incantation to activate the environment to your user's shell startup script `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using zsh to ~/.zshrc
 
+## Lesson Notes
 
-## Notes
+### Getting started with Ansible 07 - The 'when' Conditional
+
+The CentOS image `images:centos/8` is missing a lot of things needed to follow the tutorial
+
+- packages: `openssh-server sudo firewalld`
+- configuration: an ansible sudoer user, firewall configuration for httpd
+
+[How To Install the Apache Web Server on CentOS 8](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-8) - I followed the isntructions, but had to add http service becuase lynx would not make connection without https certificate.
+
+
+## General Notes
 
 ```
 # capture your containers' ip addresses in a handy shell variable for iterating over
