@@ -21,6 +21,16 @@
   become: true
 
   tasks:
+
+    - name: install httpd package with php (Centos)
+      tags: apache,centos,httpd
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+      when: ansible_distribution == "CentOS"
+
     - name: install apache2 with php (Ubuntu)
       tags: apache,ubuntu,httpd
       apt:
@@ -30,13 +40,21 @@
         state: latest
       when: ansible_distribution in [ "Debian", "Ubuntu"]
 
-    - name: install package for apache2 with php (Centos)
-      tags: apache,centos,httpd
-      dnf:
-        name:
-          - httpd
-          - php
-        state: latest
+    - name: copy default html file for site
+      tags: apache,apache,apache2,httpd
+      copy:
+        #  directory 'files' is assumed
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+    
+    - name: Start service httpd, if not started (CentOS)
+      tags: centos,httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
       when: ansible_distribution == "CentOS"
 
 - hosts: db_servers
