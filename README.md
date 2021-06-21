@@ -42,7 +42,8 @@ The CentOS image `images:centos/8` is missing a lot of things needed to follow t
 - packages: `openssh-server sudo firewalld`
 - configuration: an ansible sudoer user, firewall configuration for httpd
 
-[How To Install the Apache Web Server on CentOS 8](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-8) - I followed the isntructions, but had to add http service becuase lynx would not make connection without https certificate.
+[How To Install the Apache Web Server on CentOS 8](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-centos-8) - I followed these ntructions, but had to add http service because could not get connection without https certificate. So I used the alternate firewall setup from here:
+[How to Install Apache on CentOS 7](https://www.liquidweb.com/kb/how-to-install-apache-on-centos-7/)
 
 ### Getting started with Ansible 10 - Tags
 
@@ -53,6 +54,10 @@ ansible-playbook site.yml --tags "apache,db"
 ```
 
 ## General Notes
+
+### Tools
+
+- [httpie](https://github.com/httpie/httpie#about-this-document) very useful commandline http client for testing.
 
 ```
 # capture your containers' ip addresses in a handy shell variable for iterating over
