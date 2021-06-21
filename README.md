@@ -33,6 +33,26 @@ the miniconda environment
 4. `mamba env create -f ./environment.yml` - to create a conda environment with ansible installed.
 5. Add the incantation to activate the environment to your user's shell startup script `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using zsh to ~/.zshrc
 
+### create the target containers with the ansible host container
+
+```
+export ubuntu_containers=("one" "three" "two" "ws")
+export centos_containers=("centos")
+export target_containers=("one" "three" "two" "ws" centos)
+
+for i in ${ubuntu_containers}; 
+do 
+    lxc launch ubuntu-minimal:focal --profile default ${i}
+done
+
+for i in ${centos_containers}; 
+do 
+    lxc launch images:centos/8 --profile default
+done
+
+# some other stuff... TBD
+```
+
 ## Lesson Notes
 
 ### Getting started with Ansible 07 - The 'when' Conditional
@@ -59,6 +79,8 @@ ansible-playbook site.yml --tags "apache,db"
 
 - [httpie](https://github.com/httpie/httpie#about-this-document) very useful commandline http client for testing.
 
+### zsh aliases
+
 ```
 # capture your containers' ip addresses in a handy shell variable for iterating over
 
@@ -80,32 +102,37 @@ for i in ${servers_ip}; do ssh-copy-id -i ~/.ssh/ansible ubuntu@$i ; done
 
 ### An example ssh_config file to manage host names and public keys
 
-Makes it easy to work with multiple keys and ansible
+Makes it easy to work with multiple keys and ansible.
+Because this whole tutorail environment is in nested lxc containers, I can safely use  ammended `/etc/hosts/` file which maps
+the target containers' ip addresses to names, which then match a simple `~/.ssh/config ` file
+
+I use a zsh alias to produce a block of name-mappins suitable for the `hosts` file
+```
+% alias lxc_hosts="lxc ls -c n4 --format csv | cut -d' ' -f1 | awk -F',' '{print \$2, \$1 \"-ansible\"}'"
+% lxc_hosts
+10.69.189.150 centos-ansible
+10.69.189.56 one-ansible
+10.69.189.216 three-ansible
+10.69.189.215 two-ansible
+10.69.189.192 ws-ansible
+```
 
 ```
 % cat ~/.ssh/config
-Host one
-        HostName 10.69.189.56
-Host three
-        HostName 10.69.189.216
-Host two
-        HostName 10.69.189.215
-
-Host one-ansible
-        HostName 10.69.189.56
-Host three-ansible
-        HostName 10.69.189.216
-Host two-ansible
-        HostName 10.69.189.215
+Host centos*
+	User lnxcfg
 
 Host *ansible
-        IdentityFile ~/.ssh/ansible
+	IdentityFile ~/.ssh/ansible
 
+Host github.com
+	User pjgoodall
+	####
 
 Host *
-        User ubuntu
-        IdentityFile ~/.ssh/peter_tutorial
-        StrictHostKeyChecking=no
+	User ubuntu
+	IdentityFile ~/.ssh/peter_tutorial
+	StrictHostKeyChecking=no
 ```
 
 ### Create the initial inventory file

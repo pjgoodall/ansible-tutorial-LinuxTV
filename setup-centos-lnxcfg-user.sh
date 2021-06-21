@@ -6,7 +6,7 @@
 # create lnxcfg user
 
 #install pre-requisite packages and vim
-dnf install -y openssh-server sudo firewalld vim
+dnf install -y openssh-server sudo vim
 
 getentUser=$(/usr/bin/getent passwd lnxcfg)
 if [ -z "$getentUser" ]
@@ -35,17 +35,9 @@ EOF
 chmod 400 /etc/sudoers.d/lnxcfg
 fi
 
-## httpd firewall configuration
-systemctl enable firewalld
-systemctl start firewalld
-
-sudo firewall-cmd --permanent --add-port=80/tcp
-sudo firewall-cmd --permanent --add-port=443/tcp
 
 ## OpenSSH server configuration file changes
 export sshconfig_file=/etc/ssh/sshd_config
-sudo firewall-cmd --reload
-
 
 ### Set options to allow sftp to  work correctly
 # https://unix.stackexchange.com/a/209793/309699
