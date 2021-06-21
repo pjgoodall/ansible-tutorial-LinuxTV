@@ -61,6 +61,10 @@ Match User lnxcfg
         
 
 EOF
-# restart sshd
+systemctl enable sshd
+systemctl start sshd
+dnf clean all 
 systemctl restart sshd
+rm -rf /var/cache/dnf
+rm -rf /tmp/*
 # end of script
