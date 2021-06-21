@@ -7,3 +7,6 @@ three-ansible
 
 [file_servers]
 two-ansible
+
+[workstations]
+ws-ansible

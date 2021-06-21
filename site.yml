@@ -16,6 +16,33 @@
         update_cache: yes
       when: ansible_distribution in [ "Debian", "Ubuntu"]
 
+- hosts: workstations
+  become: true
+  tasks:
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /usr/local/bin
+      state: directory
+      mode: '0755'
+      owner: root
+      group: root
+
+  - name: install unzip
+    package:
+      name: unzip
+      state: latest
+
+  - name: install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0755
+      owner: root
+      group: root
+
+
 - hosts: web_servers
   tags: apache,apache2,ubuntu
   become: true
