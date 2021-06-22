@@ -1,7 +1,6 @@
 # ansible_tutorial
 
-Following a [tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7LKdWeXYUe6_UTeUybE2Z)
- on the LearnLinuxTV YouTube Channel
+Following the ['Ansible' tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7LKdWeXYUe6_UTeUybE2Z)  on the [LearnLinuxTV](https://www.youtube.com/c/LearnLinuxtv) YouTube Channel
 
 ## Process
 
@@ -9,7 +8,7 @@ Following a [tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7
 
 ### Create required lxc profile
 
-You will need to substitute in your public key you made for ansible by editing 
+You will need to substitute in your public key you made for [Ansible](https://en.wikipedia.org/wiki/Ansible_(software)) by editing 
 
 ```
 lxc profile create ansible
@@ -24,14 +23,14 @@ lxc launch ubuntu:20.04 --profile default --profile ansible ansible-host
 ```
 
 
-Within the Ubuntu 20.04 LTS lxc container:
+Within the Ubuntu 20.04 [LTS](https://ubuntu.com/blog/what-is-an-ubuntu-lts-release) [LXC](https://ubuntu.com/server/docs/containers-lxc) container:
 
-1. Install miniconda using install-miniconda.sh
+1. Install [miniconda]() using `install-miniconda.sh`
 2. `apt purge ansible` - to make sure there is no ansible installation based on a python which conflicts with 
 the miniconda environment
-3. `conda install -c conda-forge mamba` -  a much quicker build tool for conda environments
-4. `mamba env create -f ./environment.yml` - to create a conda environment with ansible installed.
-5. Add the incantation to activate the environment to your user's shell startup script `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using zsh to ~/.zshrc
+3. `conda install -c conda-forge mamba` -  [mamba](https://github.com/mamba-org/mamba) is a much quicker tool for building [conda](https://towardsdatascience.com/environment-management-with-conda-python-2-3-b9961a8a5097) [python virtual environments](https://docs.python-guide.org/dev/virtualenvs/)
+4. `mamba env create -f ./environment.yml` - to create a conda environment with ansible installed using a [yaml environment specification file](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands).
+5. Add the [incantation to activate](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment) the environment to your user's shell startup script `echo 'conda activate ansible_env >>~/.bashrc'` change if you are using [zsh](https://medium.com/@harrison.miller13_28580/bash-vs-z-shell-a-tale-of-two-command-line-shells-c65bb66e4658) to ~/.zshrc
 
 ### create the target containers with the ansible host container
 
@@ -185,7 +184,6 @@ Host *ansible
 	IdentityFile ~/.ssh/ansible
 
 ```
-
 
 
 
