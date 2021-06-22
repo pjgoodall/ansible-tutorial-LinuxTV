@@ -60,6 +60,7 @@
       service:
         name: firewalld
         state: started
+        enabled: yes
       when: ansible_distribution == "CentOS"
 
     - name: allow 443 firewall (CentOS)
@@ -89,12 +90,14 @@
         state: latest
       when: ansible_distribution == "CentOS"
 
-    - name: start httpd (CentOS)
+    - name: configure httpd service (CentOS)
       tags: apache,centos,httpd
       service:
         name: httpd
         state: started
+        enabled: yes
       when: ansible_distribution == "CentOS"
+
 
     - name: install apache2 with php (Ubuntu)
       tags: apache,ubuntu,httpd
