@@ -28,3 +28,5 @@ roles/**
 *.tgz
 
 
+.vscode/**
+.vscode/settings.json

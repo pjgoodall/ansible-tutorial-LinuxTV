@@ -1,0 +1,85 @@
+---
+## Upgrade packages for all
+# Modified to use separate users for different os - before install uniform user and key
+
+- hosts: ubuntu
+  remote_user: ubuntu
+  become: true
+  pre_tasks:
+    - name: install updates (Ubuntu, Debian)
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution in [ "Debian", "Ubuntu"]
+
+- hosts: centos
+  remote_user: lnxcfg
+  become: true
+  pre_tasks:
+    - name: install updates (CentOS)
+      tags: always
+      dnf:
+        update_cache: yes
+      when: ansible_distribution == "CentOS"
+
+## Create user and install ssh-key
+
+# CentOS
+
+- hosts: centos
+  remote_user: lnxcfg
+  become: true
+  tasks:
+    - name: create simone user (CentOS)
+      tags: centos
+      ansible.builtin.user:
+        name: simone
+        shell: /bin/bash
+        group: root
+
+    - name: add ssh key for simone
+      tags: always
+      ansible.posix.authorized_key:
+        user: simone
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIACBSmFgMek1WjJif8W2Iz4W9YoVMu9wCfiTja+GJq3h ansible"
+        state: present
+
+    - name: add sudoers file for simone (CentOS)
+      tags: always
+      ansible.builtin.copy:
+        content: "simone ALL=(ALL:ALL) NOPASSWD:ALL"
+        dest: /etc/sudoers.d/simone
+        owner: root
+        group: root
+        mode: 0440
+
+# Ubuntu
+
+- hosts: ubuntu
+  remote_user: ubuntu
+  become: true
+  tasks:
+    - name: create simone user (Ubuntu)
+      tags: always
+      ansible.builtin.user:
+        name: simone
+        comment: "imaginary user"
+        group: sudo
+        append: yes
+
+    - name: add ssh key for simone
+      tags: always
+      ansible.posix.authorized_key:
+        user: simone
+        state: present
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIACBSmFgMek1WjJif8W2Iz4W9YoVMu9wCfiTja+GJq3h ansible"
+
+    - name: add sudoers file for simone (Ubuntu)
+      tags: always
+      ansible.builtin.copy:
+        content: "simone ALL=(ALL:ALL) NOPASSWD:ALL"
+        dest: /etc/sudoers.d/simone
+        owner: root
+        group: root
+        mode: 0440

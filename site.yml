@@ -5,44 +5,26 @@
     - name: install updates (CentOS)
       tags: always
       dnf:
-        update_only: yes
         update_cache: yes
+      changed_when: false
       when: ansible_distribution == "CentOS"
 
     - name: install updates (Ubuntu, Debian)
       tags: always
       apt:
-        upgrade: dist
         update_cache: yes
+      changed_when: false
       when: ansible_distribution in [ "Debian", "Ubuntu"]
 
-- hosts:  all
+- hosts: all
   become: true
   tasks:
-
-    - name: create simone user
-      tags: always
-      user:
-        name: simone
-        groups: root
-
     - name: add ssh key for simone
       tags: always
-      authorized_key:
+      ansible.posix.authorized_key:
         user: simone
         key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIACBSmFgMek1WjJif8W2Iz4W9YoVMu9wCfiTja+GJq3h ansible"
-
-    - name: add sudoers file for simone
-      tags: always
-      copy:
-        content: 'simone ALL=(ALL:ALL) NOPASSWD:ALL'
-        dest: /etc/sudoers.d/simone
-        owner: root
-        group: root
-        mode: 0440
-
-
-
+        state: present
 
 - hosts: workstations
   become: true
@@ -74,7 +56,6 @@
   become: true
 
   tasks:
-
     - name: install firewalld (Centos)
       tags: apache,centos,httpd
       dnf:
@@ -126,7 +107,6 @@
         enabled: yes
       when: ansible_distribution == "CentOS"
 
-
     - name: install apache2 with php (Ubuntu)
       tags: apache,ubuntu,httpd
       apt:
@@ -140,7 +120,7 @@
       tags: apache,centos,httpd
       lineinfile:
         path: /etc/httpd/conf/httpd.conf
-        regexp: '^ServerAdmin'
+        regexp: "^ServerAdmin"
         line: ServerAdmin somebody@somewhere.net
       when: ansible_distribution == "CentOS"
       register: httpd
@@ -151,7 +131,6 @@
         name: httpd
         state: restarted
       when: httpd.changed
-
 
     - name: copy default html file for site
       tags: apache,apache2,httpd

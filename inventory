@@ -10,3 +10,12 @@ two-ansible
 
 [workstations]
 ws-ansible
+
+[centos]
+centos-ansible
+
+[ubuntu]
+one-ansible
+two-ansible
+three-ansible
+ws-ansible
