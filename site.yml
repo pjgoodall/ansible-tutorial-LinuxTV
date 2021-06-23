@@ -16,6 +16,17 @@
         update_cache: yes
       when: ansible_distribution in [ "Debian", "Ubuntu"]
 
+- hosts:  all
+  become: true
+  tasks:
+
+    - name: create simone user
+      tags: always
+      user:
+        name: simone
+        groups: root
+
+
 - hosts: workstations
   become: true
   tasks:
@@ -108,8 +119,25 @@
         state: latest
       when: ansible_distribution in [ "Debian", "Ubuntu"]
 
+    - name: change admin email address
+      tags: apache,centos,httpd
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^ServerAdmin'
+        line: ServerAdmin somebody@somewhere.net
+      when: ansible_distribution == "CentOS"
+      register: httpd
+
+    - name: restart httpd (CentOS)
+      tags: apache,centos,httpd
+      service:
+        name: httpd
+        state: restarted
+      when: httpd.changed
+
+
     - name: copy default html file for site
-      tags: apache,apache,apache2,httpd
+      tags: apache,apache2,httpd
       copy:
         #  directory 'files' is assumed
         src: default_site.html
