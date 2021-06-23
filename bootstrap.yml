@@ -1,5 +1,5 @@
 ---
-## Upgrade packages for all
+## 
 # Modified to use separate users for different os - before install uniform user and key
 
 - hosts: ubuntu
@@ -17,7 +17,7 @@
   remote_user: lnxcfg
   become: true
   pre_tasks:
-    - name: install updates (CentOS)
+    - name: install update repository cache (CentOS)
       tags: always
       dnf:
         update_cache: yes
