@@ -1,10 +1,51 @@
-# ansible_tutorial
+# ansible_tutorial with nested LXC containers
 
-Following the ['Ansible' tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7LKdWeXYUe6_UTeUybE2Z)  on the [LearnLinuxTV](https://www.youtube.com/c/LearnLinuxtv) YouTube Channel
+Started following the ['Ansible' tutorial playlist](https://youtube.com/playlist?list=PLT98CRl2KxKG7LKdWeXYUe6_UTeUybE2Z)  on the [LearnLinuxTV](https://www.youtube.com/c/LearnLinuxtv) YouTube Channel. There was a bit of strangeness in the channel's author's sources at about episode 13. Jumped past roles and host-variables to templates. I'm going to refactor as best I can.
 
-## Process
 
-( in-progess)
+
+## The Goal
+
+
+
+Provide a well-worked example using ansible to configure a test environment implemented on nested lxc containers. With an aim to making it easy to provision development environments on all sorts of platforms.
+
+I am interested in being able to place a PyTorch environment quickly on my workstation, and  any cloud-server providing affordable machine-leaning GPU.
+
+### Looks like
+
+1. Generate a working development environment with an lxc Ubuntu container. 
+2. Within the host container provision nested containers from several distributions - Ubuntu, Debian, CentOS.
+3. Create and deploy a single ssh key, and ansible user for ansible to manage the nested containers.
+4. Using ansible, configure those nested containers in groups: WebServers, FileServers, DatabaseServers
+
+The various distributions will promote some cross-platform challenges...
+
+### Try to
+
+- [Don't Repeat Yourself ](https://wiki.c2.com/?DontRepeatYourself)  (DRY)
+- Make it readable
+- Be an example for learning
+- Improve my use of GitHub and BitBucket 
+
+### Host Container
+
+- A main, current release, [Ubuntu Focal Fossa LTS](https://releases.ubuntu.com/20.04/) container, which can be logged into using an ssh key, with password login disabled. It will still be accessible for alternate login via the `lxc exec` interface.
+-  A reasonable development environment [neovim](https://neovim.io/), [Zsh](https://en.wikipedia.org/wiki/Z_shell), [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh), [zplug](https://github.com/zplug/zplug) plugins for history and navigation.
+- A test environment managed from a git repository
+- X11 support. See:  [Running X11 software in LXD containers](https://blog.simos.info/running-x11-software-in-lxd-containers/)
+
+
+
+
+
+
+
+
+
+-------------------
+
+## Below are pre-refactoring notes...
 
 ### Create required lxc profile
 
