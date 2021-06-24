@@ -19,3 +19,9 @@ one-ansible
 two-ansible
 three-ansible
 ws-ansible
+
+[ubuntu_web_servers]
+ubuntu:&web_servers
+
+[centos_web_servers]
+centos:&web_servers

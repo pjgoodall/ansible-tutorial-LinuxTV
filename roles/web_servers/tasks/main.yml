@@ -1,85 +1,33 @@
-- name: install firewalld (Centos)
-  tags: apache,centos,httpd
-  dnf:
-    name:
-      - firewalld
-    state: latest
-  when: ansible_distribution == "CentOS"
-
-- name: start firewalld (CentOS)
-  tags: apache,centos,httpd
-  service:
-    name: firewalld
-    state: started
-    enabled: yes
-  when: ansible_distribution == "CentOS"
-
-- name: allow 443 firewall (CentOS)
-  tags: apache,centos,httpd
-  ansible.posix.firewalld:
-    port: 443/tcp
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: ansible_distribution == "CentOS"
-
-- name: allow http firewall (CentOS)
-  tags: apache,centos,httpd
-  ansible.posix.firewalld:
-    port: 80/tcp
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: ansible_distribution == "CentOS"
-
-- name: install httpd package with php (Centos)
-  tags: apache,centos,httpd
-  dnf:
-    name:
-      - httpd
-      - php
-    state: latest
-  when: ansible_distribution == "CentOS"
-
-- name: configure httpd service (CentOS)
-  tags: apache,centos,httpd
-  service:
-    name: httpd
-    state: started
-    enabled: yes
-  when: ansible_distribution == "CentOS"
-
-- name: install apache2 with php (Ubuntu)
-  tags: apache,ubuntu,httpd
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-php
-    state: latest
-  when: ansible_distribution in [ "Debian", "Ubuntu"]
-
-- name: change admin email address
-  tags: apache,centos,httpd
-  lineinfile:
-    path: /etc/httpd/conf/httpd.conf
-    regexp: "^ServerAdmin"
-    line: ServerAdmin somebody@somewhere.net
-  when: ansible_distribution == "CentOS"
-  register: httpd
-
-- name: restart httpd (CentOS)
-  tags: apache,centos,httpd
-  service:
-    name: httpd
-    state: restarted
-  when: httpd.changed
-
-- name: copy default html file for site
-  tags: apache,apache2,httpd
-  copy:
-    #  directory 'files' is assumed
-    src: default_site.html
-    dest: /var/www/html/index.html
-    owner: root
-    group: root
-    mode: 0644
+ - name: install web server packages
+   tags: apache,apache2,centos,httpd,ubuntu
+   package:
+     name:
+       - "Template:Apache package name"
+       - "Template:Php package name"
+     state: latest
+   when: ansible_distribution == "CentOS"
+ 
+ - name: start and enable apache
+   tags: apache,centos,httpd
+   service:
+     name: "Template:Apache service"
+     state: started
+     enabled: yes
+ 
+ - name: change e-mail address for admin
+   tags: apache,centos,httpd
+   lineinfile:
+     path: /etc/httpd/conf/httpd.conf
+     regexp: '^ServerAdmin'
+     line: ServerAdmin somebody@somewhere.net
+   when: ansible_distribution == "CentOS"
+   notify: restart_apache
+ 
+ - name: copy html file for site
+   tags: apache,apache,apache2,httpd
+   copy:
+     src: default_site.html
+     dest: /var/www/html/index.html
+     owner: root
+     group: root
+     mode: 0644ssh
