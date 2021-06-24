@@ -10,8 +10,8 @@
 *.*~
 
 # Tower runtime roles 
-roles/**
-!roles/requirements.yml
+# roles/**
+# !roles/requirements.yml
 
 # Try to avoid any plain-text passwords 
 *pwd*
